@@ -1,0 +1,14 @@
+# Pasta de build do CMake (gerada localmente, nao deve ir pro repo)
+build/
+ 
+# Cache de dependencias baixadas pelo FetchContent (SFML compilado)
+_deps/
+ 
+# Executaveis e objetos soltos
+*.o
+*.out
+sfml-app
+ 
+# Arquivos de configuracao de IDE (opcional, remova se o time quiser versionar)
+.vscode/
+.idea/
