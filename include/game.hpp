@@ -1,10 +1,11 @@
 #pragma once
 
 #include <vector>
-#include <SFML/Graphics.hpp>
+#include <pilhaIngrediente.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+
 /*
     Classe que age como a "game engine",
     classe "Wrapper".
@@ -13,6 +14,10 @@ class Game
 {
     private:
         //Variáveis
+
+        //Objetos do Jogo
+        std::vector<std::unique_ptr<Ingrediente>> ingredientes;
+        pilhaIngrediente stackIngrediente;        
 
         //Tela
         sf::RenderWindow *window;
@@ -25,8 +30,8 @@ class Game
         
         //Funções Privadas
         void initVariables();
-        void initWindow();
         void initIngredientes();
+        void initWindow();
     public:
         //Construtor e Destrutor
         Game();
@@ -38,6 +43,8 @@ class Game
         //Funções
         void update();
         void render();
+        void clickIngredientes(const sf::Vector2f& pos);
         void updateMousePositions();
+        void updateIngredientes();
         void pollEvents();
 };

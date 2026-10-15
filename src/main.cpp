@@ -1,4 +1,4 @@
-#include<game.h>
+#include<game.hpp>
 
 int main() {
     //Inicializar a game engine:
@@ -9,6 +9,7 @@ int main() {
           
         //Update
         game.update();
+        
         //Render
         game.render();
     }

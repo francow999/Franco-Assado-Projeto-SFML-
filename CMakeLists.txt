@@ -22,3 +22,7 @@ add_executable(sfml-app ${SOURCES})
  
 target_include_directories(sfml-app PRIVATE include)
 target_link_libraries(sfml-app PRIVATE sfml-graphics sfml-window sfml-system)
+
+# cmake -S . -B build
+# cmake --build build
+# ./build/sfml-app
