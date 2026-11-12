@@ -5,7 +5,7 @@ void pilhaIngrediente::push(std::unique_ptr<Ingrediente> ingrediente) {
     this->ingredientes.push_back(std::move(ingrediente));
 }
 
-void pilhaIngrediente::pop(std::unique_ptr<Ingrediente> ingrediente) {
+void pilhaIngrediente::pop() {
     if (!this->ingredientes.empty()) {
         this->ingredientes.pop_back();
     }
@@ -31,4 +31,16 @@ void pilhaIngrediente::desenhar(sf::RenderTarget& alvo, sf::Vector2f base, float
         alvo.draw(sprite);
         y -= passo; // Incrementa a posição y para o próximo ingrediente
     }
+}
+
+std::vector<int> pilhaIngrediente::ids() const {
+    std::vector<int> ids;
+    for (const auto& ingrediente : this->ingredientes) {
+        ids.push_back(ingrediente->getId());
+    }
+    return ids;
+}
+
+int pilhaIngrediente::size() const {
+    return this->ingredientes.size();
 }
