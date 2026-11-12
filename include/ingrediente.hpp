@@ -13,6 +13,7 @@ class Ingrediente{
         //const sf::Texture& getTextura() const;
         int getId() const;
         sf::Vector2f getPosicao() const;
+        sf::FloatRect getHitbox() const;
     private:
         std::unique_ptr<sf::Texture> textura;
         std::unique_ptr<sf::Sprite> sprite;
