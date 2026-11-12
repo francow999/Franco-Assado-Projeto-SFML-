@@ -1,4 +1,3 @@
-#pragma once
 #include <ingrediente.hpp>
 
 Ingrediente::Ingrediente(std::string vTextura, std::string vNome, int vId, sf::Vector2f vPosicao) : id(vId)
@@ -62,4 +61,15 @@ int Ingrediente::getId() const {
 
 sf::Vector2f Ingrediente::getPosicao() const {
     return this->posicao;
+}
+
+sf::FloatRect Ingrediente::getHitbox() const {
+    sf::FloatRect hitbox = this->sprite->getGlobalBounds();
+    const float margemX = 4.f;
+    const float margemY = 26.f;
+    hitbox.left += margemX;
+    hitbox.top += margemY;
+    hitbox.width -= 2 * margemX;
+    hitbox.height -= 2 * margemY;
+    return hitbox;
 }
