@@ -37,6 +37,26 @@ void Game::initTelas()
     } else {
         std::cerr << "Erro ao carregar o fundo\n";
     }
+
+    if (this->textureGameOver.loadFromFile("./assets/sprites/GameOver.png")) {
+        this->spriteGameOver.setTexture(this->textureGameOver);
+        sf::FloatRect b = this->spriteGameOver.getGlobalBounds();
+        this->spriteGameOver.setOrigin(b.width / 2.f, b.height / 2.f);
+        this->spriteGameOver.setPosition(500.0f, 250.0f);
+    } else {
+        std::cout << "Erro ao carregar a textura do Game Over\n";
+        std::cerr << "Erro ao carregar a textura do Game Over\n";
+    }
+
+    if (this->texturePressSpace.loadFromFile("./assets/sprites/PressSpace.png")) {
+        this->spritePressSpace.setTexture(this->texturePressSpace);
+        sf::FloatRect b = this->spritePressSpace.getGlobalBounds();
+        this->spritePressSpace.setOrigin(b.width / 2.f, b.height / 2.f);
+        this->spritePressSpace.setPosition(500.0f, 350.0f);
+    } else {
+        std::cout << "Erro ao carregar a textura do Press Space\n";
+        std::cerr << "Erro ao carregar a textura do Press Space\n";
+    }
 }
 
 
@@ -265,7 +285,7 @@ void Game::updateRevelando()
 
 void Game::updateMontando()
 {
-    if (this->clock.getElapsedTime().asSeconds() >= 60.0f) // 60 segundos
+    if (this->clock.getElapsedTime().asSeconds() >= 20.0f) // 20 segundos
     {
         this->mudarEstado(Estado::GameOver);
     }
@@ -315,8 +335,20 @@ void Game::render()
 
     //Limpa a tela antiga(Preto por padrão)
     this->window->clear();
-
     this->window->draw(this->spriteBackground);
+
+    if(this->estadoAtual == Estado::GameOver)
+    {
+        while(!this->stackIngrediente.isEmpty())
+        {
+            this->stackIngrediente.pop();
+        }
+        sf::RectangleShape escuro(sf::Vector2f(1000.0f, 600.0f));
+        escuro.setFillColor(sf::Color(0, 0, 0, 150)); // Preto com transparência
+        this->window->draw(escuro);
+        this->window->draw(this->spriteGameOver);
+        this->window->draw(this->spritePressSpace);
+    }
 
     this->window->draw(this->ingredientes[0]->getSprite());
     this->window->draw(this->ingredientes[2]->getSprite());

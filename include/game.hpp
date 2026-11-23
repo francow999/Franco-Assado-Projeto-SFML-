@@ -19,8 +19,12 @@ class Game
         //Tela de Fundo
         sf::Texture textureBackground;
         sf::Sprite spriteBackground;
-        sf::Font fonte;
-        sf::Text textoReiniciar;
+
+        //Game Over
+        sf::Texture textureGameOver;
+        sf::Sprite spriteGameOver;
+        sf::Texture texturePressSpace;
+        sf::Sprite spritePressSpace;
 
         //Objetos do Jogo
         std::vector<std::unique_ptr<Ingrediente>> ingredientes;
