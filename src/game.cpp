@@ -28,12 +28,24 @@ void Game::initIngredientes()
     this->spritePlate.setPosition(420.0f, 450.0f);
 }
 
+void Game::initTelas()
+{
+    if (this->textureBackground.loadFromFile("./assets/sprites/background.png")) {
+        this->spriteBackground.setTexture(this->textureBackground);
+        sf::Vector2u t = this->textureBackground.getSize();
+        this->spriteBackground.setScale(1000.f / t.x, 600.f / t.y);   // estica para a janela
+    } else {
+        std::cerr << "Erro ao carregar o fundo\n";
+    }
+}
+
+
 void Game::initClientes()
 {
     const std::vector<std::string> caminhosClientes = {
         "./assets/sprites/AnnoyingDog.png",
         "./assets/sprites/ThwompSM64.png",
-        "./assets/sprites/remove.png"
+        "./assets/sprites/Cultist.gif"
     };
 
     this->texturasClientes.resize(caminhosClientes.size());
@@ -43,9 +55,7 @@ void Game::initClientes()
         }
     }
 
-    this->spriteCliente.setTexture(this->texturasClientes[this->cliente.getIdPersonagem() - 1]); // Define a textura inicial do cliente
-    this->spriteCliente.setScale(0.5f, 0.5f);
-    this->spriteCliente.setPosition(620.0f, 40.0f); // Define a posição inicial do cliente
+    this->aplicarCliente();
 }
 
 void Game::initBotoes()
@@ -89,6 +99,12 @@ void Game::mudarEstado(Estado novoEstado)
     this->clock.restart(); // Reinicia o relógio para medir o tempo no novo estado
 }
 
+void Game::reiniciar()
+{
+    this->intervaloFalas = 1.5f; // Reinicia o intervalo de falas
+    this->novoCliente(); // Cria um novo cliente e reinicia o jogo
+}
+
 //Construtor e Destrutor
 Game::Game()
 {
@@ -97,6 +113,7 @@ Game::Game()
     this->initIngredientes();
     this->initClientes();
     this->initBotoes();
+    this->initTelas();
     this->mudarEstado(Estado::Revelando);   
 }
 
@@ -112,12 +129,23 @@ const bool Game::getWindowIsOpen() const
 
 //Funções
 
+void Game::aplicarCliente()
+{
+    int idx = this->cliente.getIdPersonagem() - 1;
+    const sf::Texture& texturaCliente = this->texturasClientes[idx];
+
+    this->spriteCliente.setTexture(texturaCliente, true);
+    float escala = 150.0f / texturaCliente.getSize().y; // Ajusta a escala com base na largura da textura
+    this->spriteCliente.setScale(escala, escala);
+    this->spriteCliente.setPosition(620.0f, 250.0f); // Define a posição inicial do cliente
+}
+
 void Game::novoCliente()
 {
     this->stackIngrediente = pilhaIngrediente(); // Reinicia a pilha de ingredientes
     this->falados.clear(); // Limpa as falas anteriores
     this->cliente = Cliente(); // Cria um novo cliente
-    this->spriteCliente.setTexture(this->texturasClientes[this->cliente.getIdPersonagem()]);
+    this->aplicarCliente();
     this->mudarEstado(Estado::Revelando); // Muda para o estado de revelação
 }
 
@@ -176,12 +204,19 @@ void Game::pollEvents()
                 this->window->close();
                 break;
             case sf::Event::KeyPressed:
+                if (this->ev.key.code == sf::Keyboard::F1) 
+                {
+                    this->debugHitbox = !this->debugHitbox;
+                }
                 if (this->ev.key.code == sf::Keyboard::Escape)
                 {
                       this->window->close();
                 }
+                if (this->ev.key.code == sf::Keyboard::Space && this->estadoAtual == Estado::GameOver)
+                {
+                    this->reiniciar();
+                }
                 // pollEvents, dentro do case sf::Event::KeyPressed:
-                if (this->ev.key.code == sf::Keyboard::F1) this->debugHitbox = !this->debugHitbox;
                 break;
             case sf::Event::MouseButtonPressed:
                 if (this->ev.mouseButton.button == sf::Mouse::Left)
@@ -280,6 +315,8 @@ void Game::render()
 
     //Limpa a tela antiga(Preto por padrão)
     this->window->clear();
+
+    this->window->draw(this->spriteBackground);
 
     this->window->draw(this->ingredientes[0]->getSprite());
     this->window->draw(this->ingredientes[2]->getSprite());

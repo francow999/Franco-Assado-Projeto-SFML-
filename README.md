@@ -4,10 +4,14 @@ de dados. Mais especificamente, como as pilhas, filas e estruturas não-lineares
 
 ## Requisitos
 Certifique-se de que você tenha as seguintes ferramentas instaladas:
+
 - Git
 - CMake (3.16 para frente).
 - Um compilador C++
-- Quaisquer pacotes que o Linux exigir para a execução do SFML
+- Quaisquer pacotes que o Linux exigir para a execução do SFML.
+
+<br>
+
 Detalhe: O jogo foi feito usando o SFML na versão 2.6.1. Versões posteriores podem quebrar
 o projeto!.
 
@@ -19,7 +23,9 @@ Espaço ou Enter: Reinicia caso tenha dado Game-Over.
 ## Como Rodar o Jogo?
 Se você estiver usando Linux:
 Acesse o repositório clonado e digite os seguintes comandos no terminal:
-> cmake -S . -B build
-> cmake --build build
-> ./build/sfml-app
+
+> cmake -S . -B build <br>
+> cmake --build build <br>
+> ./build/sfml-app <br>
+
 Se você estiver usando Windows:

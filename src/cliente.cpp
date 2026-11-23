@@ -4,8 +4,8 @@
 Cliente::Cliente(){
     srand(time(0));                          // Inicializa a semente do gerador de números aleatórios
     this->qtdeIngredientes = rand() % 6 + 1; // Gera um número entre 1 e 6
-    //this->idPersonagem = rand() % 3 + 1;      // Gera um número entre 1 e 3 para o ID do personagem
-    this->idPersonagem = 1; // Para teste, define o ID do personagem como 1
+    this->idPersonagem = rand() % 3 + 1;      // Gera um número entre 1 e 3 para o ID do personagem
+    //this->idPersonagem = 1; // Para teste, define o ID do personagem como 1
     this->pedido.push_back(1);                    // Adiciona o ID do ingrediente "Pão de cima" (ID 1)
     for (int i = 0; i < this->qtdeIngredientes; ++i) {
         int ingredienteId = rand() % 5 + 3;  // Gera um número entre 3 e 7

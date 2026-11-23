@@ -14,7 +14,13 @@ class Game
 {
     private:
         //Variáveis
-        bool debugHitbox;
+        bool debugHitbox = false;
+
+        //Tela de Fundo
+        sf::Texture textureBackground;
+        sf::Sprite spriteBackground;
+        sf::Font fonte;
+        sf::Text textoReiniciar;
 
         //Objetos do Jogo
         std::vector<std::unique_ptr<Ingrediente>> ingredientes;
@@ -52,6 +58,8 @@ class Game
         void updateResultado();
 
         //Funções Privadas
+        void reiniciar();
+        void aplicarCliente();
         void enviarLanche();
         void novoCliente();
         void initVariables();
@@ -59,6 +67,7 @@ class Game
         void initWindow();
         void initClientes();
         void initBotoes();
+        void initTelas();
     public:
         //Construtor e Destrutor
         Game();
