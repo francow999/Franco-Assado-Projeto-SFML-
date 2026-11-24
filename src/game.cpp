@@ -78,6 +78,38 @@ void Game::initClientes()
     this->aplicarCliente();
 }
 
+void Game::initAudio()
+{
+    if (!this->musica.openFromFile("./assets/music/GodotTheme.wav"))
+    {
+        return;
+    }
+    this->musica.setLoop(true);
+    this->musica.setVolume(20.f);
+    this->musica.play();
+
+    const std::vector<std::string> caminhosSons = 
+    {
+        "./assets/sounds/DogBark.wav",
+        "./assets/sounds/Thwomp.wav",
+        "./assets/sounds/Cultist.wav"
+    };
+    this->falasPersonagens.resize(caminhosSons.size());
+    for (std::size_t i = 0; i < caminhosSons.size(); i++)
+    {
+        if (!this->falasPersonagens[i].loadFromFile(caminhosSons[i]))
+        {
+            std::cerr << "Erro ao carregar som: " << caminhosSons[i] << "\n";    
+        }
+    }
+
+    if (!this->bufferGameOver.loadFromFile("./assets/music/Game_Over_Yeah!.wav"))
+    {
+        std::cerr << "Erro ao carregar som do GameOver\n";
+    }
+    this->somGameOver.setBuffer(this->bufferGameOver);
+}
+
 void Game::initBotoes()
 {
     if (!this->textureDesfazer.loadFromFile("./assets/sprites/remove.png")) {
@@ -115,12 +147,20 @@ void Game::enviarLanche()
 
 void Game::mudarEstado(Estado novoEstado)
 {
+    if (novoEstado == Estado::GameOver && this->estadoAtual != Estado::GameOver)
+    {
+        this->musica.stop();
+        this->somGameOver.play();
+    }
+
     this->estadoAtual = novoEstado;
     this->clock.restart(); // Reinicia o relógio para medir o tempo no novo estado
 }
 
 void Game::reiniciar()
 {
+    this->somGameOver.stop();
+    this->musica.play();
     this->intervaloFalas = 1.5f; // Reinicia o intervalo de falas
     this->novoCliente(); // Cria um novo cliente e reinicia o jogo
 }
@@ -131,6 +171,7 @@ Game::Game()
     this->initVariables();
     this->initWindow();
     this->initIngredientes();
+    this->initAudio();
     this->initClientes();
     this->initBotoes();
     this->initTelas();
@@ -158,6 +199,7 @@ void Game::aplicarCliente()
     float escala = 150.0f / texturaCliente.getSize().y; // Ajusta a escala com base na largura da textura
     this->spriteCliente.setScale(escala, escala);
     this->spriteCliente.setPosition(620.0f, 250.0f); // Define a posição inicial do cliente
+    this->somFala.setBuffer(this->falasPersonagens[idx]);
 }
 
 void Game::novoCliente()
@@ -275,6 +317,7 @@ void Game::updateRevelando()
         {
             int id = this->cliente.proximaFala();
             this->falados.push_back(id);
+            this->somFala.play();
         }
         else
         {

@@ -15,6 +15,15 @@ class Game
     private:
         //Variáveis
         bool debugHitbox = false;
+        float intervaloFalas = 1.5f; // Intervalo de tempo entre falas em segundos
+        bool acertou = false;
+
+        // Musicas e Sons
+        sf::Music musica;
+        std::vector<sf::SoundBuffer> falasPersonagens;
+        sf::Sound somFala;
+        sf::SoundBuffer bufferGameOver;
+        sf::Sound somGameOver;
 
         //Tela de Fundo
         sf::Texture textureBackground;
@@ -33,14 +42,12 @@ class Game
         sf::Sprite spritePlate;
         sf::Texture texturePlate;
         std::vector<int> falados;
-        float intervaloFalas = 1.5f; // Intervalo de tempo entre falas em segundos
         std::vector<sf::Texture> texturasClientes;
         sf::Sprite spriteCliente;
         sf::Sprite spriteDesfazer; //Botões
         sf::Texture textureDesfazer;
         sf::Sprite spriteEnviar;
         sf::Texture textureEnviar;
-        bool acertou = false;
 
         //Tela
         sf::RenderWindow *window;
@@ -66,6 +73,7 @@ class Game
         void aplicarCliente();
         void enviarLanche();
         void novoCliente();
+        void initAudio();
         void initVariables();
         void initIngredientes();
         void initWindow();
